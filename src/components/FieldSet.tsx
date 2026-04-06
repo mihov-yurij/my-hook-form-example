@@ -7,7 +7,7 @@ interface FieldSetProps {
 }
 export const FieldSet = ({ label, children }: FieldSetProps) => {
   return (
-    <Container>
+    <Container errorState={false}>
       {label && <Legend>{label}</Legend>}
       <Wrapper>{children}</Wrapper>
     </Container>

@@ -1,12 +1,11 @@
 import styled from "@emotion/styled";
 import { useForm, useFieldArray } from "react-hook-form";
-
-import { Field } from "./Field.tsx";
-import { FieldSet } from "./FieldSet.tsx";
-import { type Recipe }  from "./types.ts";
+import { Field } from "./Field";
+import { FieldSet } from "./FieldSet";
+import { Recipe } from "./types"; 
 
 interface Props {
-  saveData: (data: Recipe) => void;
+    saveData: (data: Recipe) => void;
 }
 export const RecipeForm = ({ saveData }: Props) => {
   const {

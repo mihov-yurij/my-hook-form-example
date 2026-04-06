@@ -1,35 +1,38 @@
 import React from "react";
-import { Container, Label, ErrorMessage } from  "./Field.styles.ts";
-
+import { Container, Label, ErrorMessage } from "./Field.styles";
 
 interface FieldProps {
-  label: string;
-  htmlFor?: string; 
+  label?: string;
+  htmlFor?: string;
   error?: {
-    message: string;
+    message?: string;
   };
   children: React.ReactElement;
 }
 
-
 export const Field = ({ label, children, htmlFor, error }: FieldProps) => {
-  // Извлекаем id из ребенка или пропса
-  const child = React.Children.only(children);
-  const id = htmlFor || child.props.id;
-  const errorId = `${id}-error`;
+  // 1. Принудительно приводим к типу ReactElement, чтобы TS видел .props
+  const child = React.Children.only(children) as React.ReactElement;
+  
+  // 2. Указываем TS, что у пропсов может быть поле id
+  const childProps = child.props as { id?: string };
+  
+  // 3. Извлекаем id безопасно
+  const id = htmlFor || childProps.id;
+  const errorId = id ? `${id}-error` : undefined;
 
   return (
     <Container errorState={!!error}>
       {label && <Label htmlFor={id}>{label}</Label>}
       
-      {/* Клонируем ребенка, чтобы прокинуть aria-атрибуты */}
-      {React.cloneElement(child, {
+     
+      {React.cloneElement(child as React.ReactElement<any>, {
         id,
         "aria-invalid": !!error,
         "aria-describedby": error ? errorId : undefined,
       })}
 
-      {error && (
+      {error?.message && (
         <ErrorMessage id={errorId} role="alert">
           {error.message}
         </ErrorMessage>
@@ -37,3 +40,4 @@ export const Field = ({ label, children, htmlFor, error }: FieldProps) => {
     </Container>
   );
 };
+

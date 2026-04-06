@@ -1,44 +1,26 @@
-import styled from "@emotion/styled";
+import { useForm } from "react-hook-form";
+import { Field } from "./components/Field";
 
-import { RecipeForm } from "./components/RecipeForm.tsx";
-import "./App.css";
-import { type Recipe } from "./components/types.ts";
+interface IFormInput {
+  username: string;
+}
 
-export default function App() {
-  const submitForm = (data: Recipe) => {
-    const formData = new FormData();
-    if (data.picture && data.picture.length > 0) {
-      formData.append("files", data.picture[0]);
-    }
-    const recipeData = {
-      name: data.name,
-      description: data.description,
-      amount: data.amount,
-      ingredients: data.ingredients,
-    };
-    formData.append("data", JSON.stringify(recipeData));        
+function App() {
+  const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
 
-    return fetch("/api/recipes/create", {
-      method: "POST",
-      body: formData,
-    }).then((response) => {
-      if (response.ok) {
-        // Handle successful upload
-      } else {
-        // Handle error
-      }
-    });
-  };
+  const onSubmit = (data: IFormInput) => console.log(data);
 
   return (
-    <Container>
-      <RecipeForm saveData={submitForm} />
-    </Container>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Field label="Имя пользователя" error={errors.username}>
+        <input 
+          id="username" 
+          {...register("username", { required: "Это поле обязательно" })} 
+        />
+      </Field>
+      <button type="submit">Отправить</button>
+    </form>
   );
 }
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
+export default App;
