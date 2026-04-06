@@ -1,36 +1,35 @@
-import React from "react";
-import { Container, Label, ErrorMessage } from "./Field.styles";
+import { FieldError } from "react-hook-form";
+import React, { ReactNode } from "react";
+import { Container, ErrorMessage } from "./Field.styles";
+
+
+
 
 interface FieldProps {
-  label?: string;
-  htmlFor?: string;
-  error?: {
-    message?: string;
-  };
-  children: React.ReactElement;
+  label?: string;          // Добавлено
+  children: ReactNode;     // Добавлено
+  htmlFor?: string;        // Добавлено
+  error?: FieldError;
 }
 
 export const Field = ({ label, children, htmlFor, error }: FieldProps) => {
-  // 1. Принудительно приводим к типу ReactElement, чтобы TS видел .props
-  const child = React.Children.only(children) as React.ReactElement;
-  
+ const child = React.Children.only(children) as React.ReactElement<React.HTMLAttributes<HTMLElement>>;
+
   // 2. Указываем TS, что у пропсов может быть поле id
   const childProps = child.props as { id?: string };
-  
+
   // 3. Извлекаем id безопасно
   const id = htmlFor || childProps.id;
   const errorId = id ? `${id}-error` : undefined;
-
+const labelElement = label && <label htmlFor={id}>{label}</label>;
   return (
     <Container errorState={!!error}>
-      {label && <Label htmlFor={id}>{label}</Label>}
-      
-     
-      {React.cloneElement(child as React.ReactElement<any>, {
-        id,
-        "aria-invalid": !!error,
-        "aria-describedby": error ? errorId : undefined,
-      })}
+      {labelElement}
+       {React.cloneElement(child as React.ReactElement<React.HTMLAttributes<HTMLElement>>, {
+  "aria-invalid": !!error,
+  "aria-describedby": error ? errorId : undefined,
+})}
+
 
       {error?.message && (
         <ErrorMessage id={errorId} role="alert">
@@ -40,4 +39,12 @@ export const Field = ({ label, children, htmlFor, error }: FieldProps) => {
     </Container>
   );
 };
+
+
+export default Field;
+export type { FieldProps };
+export { Container, ErrorMessage };
+
+
+
 
