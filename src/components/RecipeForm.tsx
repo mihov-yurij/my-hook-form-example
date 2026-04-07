@@ -19,14 +19,14 @@ export const RecipeForm = ({ saveData }: Props) => {
     control,
   });
 
-  const submitForm = (formData: Recipe) => {
-    saveData(formData);
-  };
+  const submitForm: (formData: Recipe) => void = (formData: Recipe) => 
+   {{ saveData(formData); console.log("Form data:", formData); }};
 
   return (
+ <form onSubmit={handleSubmit(submitForm)}> 
     <Container>
       <h1>New recipe</h1>
-      {/* <form onSubmit={handleSubmit(submitForm)}> */}
+     
         <div className="resip-section">
         <FieldSet label="Basics">
           <Field label="Name" error={errors.name}>
@@ -134,6 +134,7 @@ export const RecipeForm = ({ saveData }: Props) => {
         </Field>
       </div>
     </Container>
+  </form>
   );
 };
 
