@@ -16,7 +16,6 @@ const RecipeForm = () => {
     formState: { errors },
   } = useForm<Recipe>();
 
-  // Функция-обработчик данных
   const submitForm: SubmitHandler<Recipe> = (formData) => {
     console.log("Данные успешно отправлены:", formData);
     alert(`Рецепт от ${formData.name} принят!`);
@@ -26,10 +25,10 @@ const RecipeForm = () => {
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Создать рецепт</h2>
       
-      {/* СВЯЗЫВАЕМ handleSubmit и submitForm (исправляет ошибку TS6133) */}
+      
       <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
         
-        {/* Поле Имя */}
+       
         <div>
           <label className="block text-sm font-medium text-gray-700">Имя</label>
           <input
@@ -40,7 +39,7 @@ const RecipeForm = () => {
           {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
         </div>
 
-        {/* Поле Email */}
+       
         <div>
           <label className="block text-sm font-medium text-gray-700">Email</label>
           <input
