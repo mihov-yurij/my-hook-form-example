@@ -1,8 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Field } from "./components/Field";
 import RecipeForm from "./components/RecipeForm";
-
-
 // @ts-ignore
 import "./App.scss";
 ;
