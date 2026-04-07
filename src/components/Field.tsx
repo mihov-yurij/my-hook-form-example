@@ -1,50 +1,18 @@
-import { FieldError } from "react-hook-form";
-import React, { ReactNode } from "react";
-import { Container, ErrorMessage } from "./Field.styles";
-
-
-
-
-interface FieldProps {
-  label?: string;          // Добавлено
-  children: ReactNode;     // Добавлено
-  htmlFor?: string;        // Добавлено
-  error?: FieldError;
-}
-
-export const Field = ({ label, children, htmlFor, error }: FieldProps) => {
- const child = React.Children.only(children) as React.ReactElement<React.HTMLAttributes<HTMLElement>>;
-
-  // 2. Указываем TS, что у пропсов может быть поле id
-  const childProps = child.props as { id?: string };
-
-  // 3. Извлекаем id безопасно
-  const id = htmlFor || childProps.id;
-  const errorId = id ? `${id}-error` : undefined;
-const labelElement = label && <label htmlFor={id}>{label}</label>;
+export const Field = ({ label, error, children }: any) => {
   return (
-    <Container errorState={!!error}>
-      {labelElement}
-       {React.cloneElement(child as React.ReactElement<React.HTMLAttributes<HTMLElement>>, {
-  "aria-invalid": !!error,
-  "aria-describedby": error ? errorId : undefined,
-})}
-
-
-      {error?.message && (
-        <ErrorMessage id={errorId} role="alert">
+    <div className="flex flex-col mb-4 w-full text-left">
+      <label className="text-sm font-semibold text-slate-600 mb-1 ml-1">
+        {label}
+      </label>
+      <div className="relative">
+        {children}
+      </div>
+      {error && (
+        <span className="text-red-500 text-xs mt-1 ml-1">
           {error.message}
-        </ErrorMessage>
+        </span>
       )}
-    </Container>
+    </div>
   );
 };
-
-
-export default Field;
-export type { FieldProps };
-export { Container, ErrorMessage };
-
-
-
 

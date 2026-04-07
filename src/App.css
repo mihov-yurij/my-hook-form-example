@@ -1,4 +1,27 @@
-.counter {
+@import "tailwindcss";
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Добавим небольшой фикс, чтобы иконки и инпуты не слипались, 
+   пока Tailwind не подхватился окончательно */
+input {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+}
+.icon-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  pointer-events: none; 
+}
+
+/* .counter {
   font-size: 16px;
   padding: 5px 10px;
   border-radius: 5px;
@@ -182,3 +205,9 @@
     border-right-color: var(--border);
   }
 };
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}; */

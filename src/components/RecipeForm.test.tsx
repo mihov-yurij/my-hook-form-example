@@ -27,5 +27,21 @@ it("should render the basic fields", () => {
   expect(screen.getByRole("button", { name: /save/i })).toBeInTheDocument();
 });
 
+it("should call saveData with form values on submit"), async () => {
+  render(<RecipeForm saveData={mockSave} />);
+}
+
+expect(mockSave).toHaveBeenCalledWith({
+  name: "Test Recipe",
+  description: "This is a test recipe", 
+  servings: 4,
+  ingredients: [
+    { name: "Flour", amount: "2 cups" },
+    { name: "Sugar", amount: "1 cup" },
+  ],
+});
+
+
+
 
 

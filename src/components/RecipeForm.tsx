@@ -26,7 +26,8 @@ export const RecipeForm = ({ saveData }: Props) => {
   return (
     <Container>
       <h1>New recipe</h1>
-      <form onSubmit={handleSubmit(submitForm)}>
+      {/* <form onSubmit={handleSubmit(submitForm)}> */}
+        <div className="resip-section">
         <FieldSet label="Basics">
           <Field label="Name" error={errors.name}>
             <Input
@@ -131,7 +132,7 @@ export const RecipeForm = ({ saveData }: Props) => {
         <Field>
           <Button variant="primary">Save</Button>
         </Field>
-      </form>
+      </div>
     </Container>
   );
 };
@@ -145,14 +146,14 @@ const Container = styled.div`
 const Input = styled.input`
   padding: 10px;
   width: 100%;
-  border: 1px solid #d9d9d9;
+  border: 1px solid #a80808;
   border-radius: 6px;
 `;
 
 const TextArea = styled.textarea`
   padding: 4px 11px;
   width: 100%;
-  border: 1px solid #d9d9d9;
+  border: 1px solid #11af4b;
   border-radius: 6px;
 `;
 
@@ -160,7 +161,7 @@ const Button = styled.button<{ variant?: "primary" | "secondary" }>`
   font-size: 14px;
   cursor: pointer;
   padding: 0.6em 1.2em;
-  border: 1px solid #d9d9d9;
+  border: 1px solid #2a12a4;
   border-radius: 6px;
   margin-right: auto;
   background-color: ${({ variant }) =>
@@ -182,3 +183,6 @@ const Row = styled.div`
     margin: 25px 0 0 8px;
   }
 `;
+
+
+export default RecipeForm;
