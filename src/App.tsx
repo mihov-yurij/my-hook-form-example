@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { Field } from "./components/Field";
-import { RecipeForm } from "./components/RecipeForm";
+import RecipeForm from "./components/RecipeForm";
+
+
 // @ts-ignore
 import "./App.scss";
 ;
@@ -94,7 +96,7 @@ function App() {
 
         {/* Форма рецепта */}
         <div className="bg-white rounded-3xl shadow-sm p-8 border border-gray-100">
-          <RecipeForm saveData={(data) => console.log("Recipe:", data)} />
+          <RecipeForm />
         </div>
       </div>
     </div>

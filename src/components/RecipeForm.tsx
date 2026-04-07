@@ -1,6 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 
-// Описываем структуру данных формы
+
+
 interface Recipe {
   name: string;
   email: string;
@@ -8,8 +9,7 @@ interface Recipe {
 }
 
 const RecipeForm = () => {
-  // 1. Используем типизацию в useForm
-  // 2. Вытаскиваем register для связи инпутов
+ 
   const {
     register,
     handleSubmit,
