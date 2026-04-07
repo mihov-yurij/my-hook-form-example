@@ -1,45 +1,47 @@
-import { it, expect } from 'vitest';
+import { it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
+import RecipeForm from "./RecipeForm";
 
-import { vi } from "vitest";
-
-// 1. Создаем заглушку для функции сохранения
+// Создаем мок-функцию с корректным типом
 const mockSave = vi.fn();
 
-it("should render the basic fields", () => {
-  // 2. Передаем её в компонент
-  render(<RecipeForm saveData={mockSave} />);
-  
-  expect(
-    screen.getByRole("heading", { name: "New recipe" }),
-  ).toBeInTheDocument();
-  expect(screen.getByRole("textbox", { name: /name/i })).toBeInTheDocument();
-  expect(
-    screen.getByRole("textbox", { name: /description/i }),
-  ).toBeInTheDocument();
-  expect(
-    screen.getByRole("spinbutton", { name: /servings/i }),
-  ).toBeInTheDocument();
-  expect(
-    screen.getByRole("button", { name: /add ingredient/i }),
-  ).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: /save/i })).toBeInTheDocument();
+beforeEach(() => {
+  vi.clearAllMocks(); // Очищаем историю вызовов перед каждым тестом
 });
 
-it("should call saveData with form values on submit"), async () => {
+it("should render all registration fields", () => {
   render(<RecipeForm saveData={mockSave} />);
-}
 
-expect(mockSave).toHaveBeenCalledWith({
-  name: "Test Recipe",
-  description: "This is a test recipe", 
-  servings: 4,
-  ingredients: [
-    { name: "Flour", amount: "2 cups" },
-    { name: "Sugar", amount: "1 cup" },
-  ],
+  expect(screen.getByText(/welcome back/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/your name/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: /create account/i })).toBeInTheDocument();
 });
+
+it("should call saveData with correct values on successful submit", async () => {
+  const user = userEvent.setup();
+  render(<RecipeForm saveData={mockSave} />);
+
+  // Заполняем форму
+  await user.type(screen.getByLabelText(/your name/i), "Ivan Ivanov");
+  await user.type(screen.getByLabelText(/email/i), "example@mail.com");
+  await user.type(screen.getByLabelText(/password/i), "secret123");
+
+  // Отправляем форму
+  await user.click(screen.getByRole("button", { name: /create account/i }));
+
+  // Проверяем, что saveData была вызвана с нужными данными
+  expect(mockSave).toHaveBeenCalledTimes(1);
+  expect(mockSave).toHaveBeenCalledWith({
+    name: "Ivan Ivanov",
+    email: "example@mail.com",
+    password: "secret123",
+  });
+});
+
 
 
 

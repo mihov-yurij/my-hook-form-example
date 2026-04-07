@@ -19,7 +19,9 @@ function App() {
   // Стили для инпутов
   const inputStyle = "w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all placeholder:text-gray-400 text-gray-700 shadow-sm";
   const iconWrapper = "absolute left-3 top-1/2 -translate-y-1/2 text-gray-400";
-
+const handleSave = (data: any) => {
+  console.log("Recipe Data:", data);
+};
   return (
     <div className="min-h-screen bg-[#f8fafc] flex flex-col items-center justify-center p-4 font-sans text-slate-900">
       <div className="w-full max-w-[450px] animate-in fade-in duration-700">
@@ -94,7 +96,7 @@ function App() {
 
         {/* Форма рецепта */}
         <div className="bg-white rounded-3xl shadow-sm p-8 border border-gray-100">
-          <RecipeForm />
+          <RecipeForm saveData={handleSave} />
         </div>
       </div>
     </div>

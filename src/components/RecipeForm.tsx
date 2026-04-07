@@ -1,68 +1,76 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { RecipeForm } from "./RecipeForm"
 
-
-interface Recipe {
+// 1. Описываем структуру данных формы
+interface RegistrationData {
   name: string;
   email: string;
-  password?: string;
+  password: string;
 }
 
-const RecipeForm = () => {
- 
+// 2. Описываем пропсы компонента
+interface RecipeFormProps {
+  saveData: (data: RegistrationData) => void;
+}
+
+const RecipeForm = ({ saveData }: RecipeFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Recipe>();
+  } = useForm<RegistrationData>();
 
-  const submitForm: SubmitHandler<Recipe> = (formData) => {
-    console.log("Данные успешно отправлены:", formData);
-    alert(`Рецепт от ${formData.name} принят!`);
+  const onSubmit: SubmitHandler<RegistrationData> = (data) => {
+    saveData(data);
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Создать рецепт</h2>
+    <div className="registration-container">
+      <h1>Welcome Back</h1>
+      <p>Please enter your details to register</p>
       
-      
-      <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
-        
-       
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <h2>Registration</h2>
+
+        {/* Поле Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Имя</label>
+          <label htmlFor="name">Your Name</label>
           <input
-            {...register("name", { required: "Введите имя" })}
-            className={`mt-1 block w-full border rounded-md p-2 ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
-            placeholder="Ваше имя"
+            id="name"
+            {...register("name", { required: "Name is required" })}
+            placeholder="Ivan Ivanov"
           />
-          {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+          {errors.name && <span style={{ color: 'red' }}>{errors.name.message}</span>}
         </div>
 
-       
+        {/* Поле Email */}
         <div>
-          <label className="block text-sm font-medium text-gray-700">Email</label>
+          <label htmlFor="email">Email</label>
           <input
+            id="email"
             type="email"
-            {...register("email", { 
-              required: "Email обязателен", 
-              pattern: { value: /^\S+@\S+$/i, message: "Неверный формат email" } 
-            })}
-            className={`mt-1 block w-full border rounded-md p-2 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+            {...register("email", { required: "Email is required" })}
             placeholder="example@mail.com"
           />
-          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+          {errors.email && <span style={{ color: 'red' }}>{errors.email.message}</span>}
         </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
-        >
-          Отправить рецепт
-        </button>
+        {/* Поле Password */}
+        <div>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            {...register("password", { required: "Password is required" })}
+            placeholder="........"
+          />
+          {errors.password && <span style={{ color: 'red' }}>{errors.password.message}</span>}
+        </div>
+
+        <button type="submit">Create Account</button>
       </form>
     </div>
   );
 };
 
 export default RecipeForm;
+
