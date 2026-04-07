@@ -1,7 +1,7 @@
 import { it, expect } from 'vitest';
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { RecipeForm } from "./RecipeForm";
+
 import { vi } from "vitest";
 
 // 1. Создаем заглушку для функции сохранения
