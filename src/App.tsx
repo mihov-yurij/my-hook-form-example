@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 import { Field } from "./components/Field";
 import { RecipeForm } from "./components/RecipeForm";
-import "./App.css";
+// @ts-ignore
+import "./App.scss";
+;
 
 interface IFormInput {
   username: string;
