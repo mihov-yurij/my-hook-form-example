@@ -1,13 +1,17 @@
-@import "tailwindcss";
+@theme {
+  --accent: #646cff;
+  --accent-bg: #f0f0ff;
+  --accent-border: #c0c0ff;
+  --border: #e0e0e0;
+  --text: #333;
+  --text-h: #111;
+  --social-bg: #f9f9f9;
+  --shadow: rgba(100, 108, 255, 0.2) 0px 4px 12px;
 
 
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+}
 
-/* Добавим небольшой фикс, чтобы иконки и инпуты не слипались, 
-   пока Tailwind не подхватился окончательно */
 input {
   display: block;
   width: 100%;

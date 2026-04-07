@@ -1,190 +1,69 @@
-import styled from "@emotion/styled";
-import { useForm, useFieldArray } from "react-hook-form";
-import { Field } from "./Field";
-import { FieldSet } from "./FieldSet";
-import { Recipe } from "./types"; 
+import { useForm, SubmitHandler } from "react-hook-form";
 
-interface Props {
-    saveData: (data: Recipe) => void;
+// Описываем структуру данных формы
+interface Recipe {
+  name: string;
+  email: string;
+  password?: string;
 }
-export const RecipeForm = ({ saveData }: Props) => {
+
+const RecipeForm = () => {
+  // 1. Используем типизацию в useForm
+  // 2. Вытаскиваем register для связи инпутов
   const {
     register,
-    // @ts-ignore
     handleSubmit,
     formState: { errors },
-    control,
   } = useForm<Recipe>();
-  const { fields, append, remove } = useFieldArray({
-    name: "ingredients",
-    control,
-  });
-// @ts-ignore
-  const submitForm: (formData: Recipe) => void = (formData: Recipe) => 
-   {{ saveData(formData); console.log("Form data:", formData); }};
+
+  // Функция-обработчик данных
+  const submitForm: SubmitHandler<Recipe> = (formData) => {
+    console.log("Данные успешно отправлены:", formData);
+    alert(`Рецепт от ${formData.name} принят!`);
+  };
 
   return (
- <form onSubmit={handleSubmit(submitForm)}> 
-    <Container>
-      <h1>New recipe</h1>
-     
-        <div className="resip-section">
-        <FieldSet label="Basics">
-          <Field label="Name" error={errors.name}>
-            <Input
-              {...register("name", { required: "Recipe name is required" })}
-              type="text"
-              id="name"
-            />
-          </Field>
-          <Field label="Picture" error={errors.picture}>
-            <Input
-              {...register("picture", {
-                required: "Recipe picture is required",
-              })}
-              type="file"
-              id="picture"
-            />
-          </Field>
-          <Field label="Description" error={errors.description}>
-            <TextArea
-              {...register("description", {
-                maxLength: {
-                  value: 100,
-                  message: "Description cannot be longer than 100 characters",
-                },
-              })}
-              id="description"
-              rows={10}
-            />
-          </Field>
-          <Field label="Servings" error={errors.amount}>
-            <Input
-              {...register("amount", {
-                valueAsNumber: true,
-                max: {
-                  value: 10,
-                  message: "Maximum number of servings is 10",
-                },
-              })}
-              type="number"
-              id="amount"
-            />
-          </Field>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">Создать рецепт</h2>
+      
+      {/* СВЯЗЫВАЕМ handleSubmit и submitForm (исправляет ошибку TS6133) */}
+      <form onSubmit={handleSubmit(submitForm)} className="space-y-4">
+        
+        {/* Поле Имя */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Имя</label>
+          <input
+            {...register("name", { required: "Введите имя" })}
+            className={`mt-1 block w-full border rounded-md p-2 ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+            placeholder="Ваше имя"
+          />
+          {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+        </div>
 
-          {/*Alternative approach using controlled component*/}
-          {/*<Field label="Picture" error={errors.picture}>*/}
-          {/*  <Controller*/}
-          {/*    control={control}*/}
-          {/*    name={"picture"}*/}
-          {/*    rules={{ required: "Recipe picture is required" }}*/}
-          {/*    render={({ field: { value, onChange, ...field } }) => {*/}
-          {/*      return (*/}
-          {/*        <Input*/}
-          {/*          {...field}*/}
-          {/*          value={value?.fileName}*/}
-          {/*          onChange={(event) => {*/}
-          {/*            onChange(event.target.files[0]);*/}
-          {/*          }}*/}
-          {/*          type="file"*/}
-          {/*          id="picture"*/}
-          {/*        />*/}
-          {/*      );*/}
-          {/*    }}*/}
-          {/*  />*/}
-          {/*</Field>*/}
-        </FieldSet>
-        <FieldSet label="Ingredients">
-          {fields.map((field, index) => {
-            return (
-              <Row key={field.id}>
-                <Field label="Name">
-                  <Input
-                    type="text"
-                    {...register(`ingredients.${index}.name`)}
-                    id={`ingredients[${index}].name`}
-                  />
-                </Field>
-                <Field label="Amount">
-                  <Input
-                    type="text"
-                    {...register(`ingredients.${index}.amount`)}
-                    defaultValue={field.amount}
-                    id={`ingredients[${index}].amount`}
-                  />
-                </Field>
-                <Button
-                  type="button"
-                  onClick={() => remove(index)}
-                  aria-label={`Remove ingredient ${index}`}
-                >
-                  &#8722;
-                </Button>
-              </Row>
-            );
-          })}
-          <Button
-            type="button"
-            onClick={() => append({ name: "", amount: "" })}
-          >
-            Add ingredient
-          </Button>
-        </FieldSet>
-        <Field>
-          <Button variant="primary">Save</Button>
-        </Field>
-      </div>
-    </Container>
-  </form>
+        {/* Поле Email */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Email</label>
+          <input
+            type="email"
+            {...register("email", { 
+              required: "Email обязателен", 
+              pattern: { value: /^\S+@\S+$/i, message: "Неверный формат email" } 
+            })}
+            className={`mt-1 block w-full border rounded-md p-2 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+            placeholder="example@mail.com"
+          />
+          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+        >
+          Отправить рецепт
+        </button>
+      </form>
+    </div>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-width: 700px;
-`;
-
-const Input = styled.input`
-  padding: 10px;
-  width: 100%;
-  border: 1px solid #a80808;
-  border-radius: 6px;
-`;
-
-const TextArea = styled.textarea`
-  padding: 4px 11px;
-  width: 100%;
-  border: 1px solid #11af4b;
-  border-radius: 6px;
-`;
-
-const Button = styled.button<{ variant?: "primary" | "secondary" }>`
-  font-size: 14px;
-  cursor: pointer;
-  padding: 0.6em 1.2em;
-  border: 1px solid #2a12a4;
-  border-radius: 6px;
-  margin-right: auto;
-  background-color: ${({ variant }) =>
-    variant === "primary" ? "#3b82f6" : "white"};
-  color: ${({ variant }) => (variant === "primary" ? "white" : "#213547")};
-`;
-
-const Row = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-
-  & > * {
-    margin-right: 20px;
-  }
-
-  button {
-    margin: 25px 0 0 8px;
-  }
-`;
-
 
 export default RecipeForm;
