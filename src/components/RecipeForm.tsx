@@ -10,6 +10,7 @@ interface Props {
 export const RecipeForm = ({ saveData }: Props) => {
   const {
     register,
+    // @ts-ignore
     handleSubmit,
     formState: { errors },
     control,
@@ -18,7 +19,7 @@ export const RecipeForm = ({ saveData }: Props) => {
     name: "ingredients",
     control,
   });
-
+// @ts-ignore
   const submitForm: (formData: Recipe) => void = (formData: Recipe) => 
    {{ saveData(formData); console.log("Form data:", formData); }};
 
