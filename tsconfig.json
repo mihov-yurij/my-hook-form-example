@@ -1,29 +1,25 @@
 {
   "compilerOptions": {
     "skipLibCheck": true,
-    
-    "moduleResolution": "bundler",
+    "module": "ESNext",
+    "moduleResolution": "bundler", // <-- ДОБАВЬТЕ ЭТУ СТРОКУ
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
-    /* Linting */
+    
+    /* Остальное без изменений */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* Types */
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "include": ["src"],
   "references": [
+    // Если вы не используете отдельный конфиг для node, можно оставить закомментированным
     // { "path": "./tsconfig.node.json" }
   ]
 }
-
-
-
- 
