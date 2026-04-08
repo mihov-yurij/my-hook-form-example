@@ -1,15 +1,19 @@
 {
   "compilerOptions": {
-    "skipLibCheck": true,
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
-    "moduleResolution": "bundler", // <-- ДОБАВЬТЕ ЭТУ СТРОКУ
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    
-    /* Остальное без изменений */
+
+    /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -17,9 +21,5 @@
 
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": ["src"],
-  "references": [
-    // Если вы не используете отдельный конфиг для node, можно оставить закомментированным
-    // { "path": "./tsconfig.node.json" }
-  ]
+  "include": ["src"]
 }
